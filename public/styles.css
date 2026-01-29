@@ -1,0 +1,8 @@
+body{ font-family: system-ui,Segoe UI,Roboto,Helvetica,Arial; margin:20px }
+main{ max-width:900px }
+.row{ display:flex; gap:12px; align-items:center; margin:8px 0 }
+.sliders label{ display:flex; gap:8px; align-items:center }
+.previewItem{ display:inline-block; margin:8px; text-align:center }
+.previewItem img{ max-width:240px; border:1px solid #ccc }
+.actions{ margin-top:12px }
+button{ padding:8px 12px }

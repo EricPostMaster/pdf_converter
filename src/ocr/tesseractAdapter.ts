@@ -56,3 +56,13 @@ export async function recognizeImage(imagePath: string, lang = 'eng', opts: Tess
 }
 
 export default { recognizeImage };
+
+export async function isTesseractAvailable(): Promise<boolean> {
+  const cmd = resolveTesseractCmd();
+  try {
+    await execFileP(cmd, ['--version']);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

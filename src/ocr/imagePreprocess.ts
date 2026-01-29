@@ -8,11 +8,17 @@ export interface PreprocessOptions {
   dpi?: number;
   deskew?: boolean;
   contrastStretch?: boolean;
+  // explicit contrast-stretch percentages, e.g. low and high like '1.5%x99.0%'
+  contrastLowPercent?: number; // e.g. 1.5
+  contrastHighPercent?: number; // e.g. 99.0
   adaptiveThreshold?: boolean;
+  // explicit threshold percent, e.g. 80
+  thresholdPercent?: number;
   invertIfNeeded?: boolean;
+  normalize?: boolean;
 }
 
-async function hasMagick(): Promise<boolean> {
+export async function hasMagick(): Promise<boolean> {
   try {
     await execFileP('magick', ['-version']);
     return true;
@@ -26,16 +32,30 @@ export async function preprocessImage(srcPath: string, dstPath: string, opts: Pr
   const useMagick = await hasMagick();
 
   if (useMagick) {
-    // Use the exact ImageMagick command the user prefers for best results
-    const args: string[] = [
-      '-define', 'magick:thread-limit=1',
-      srcPath,
-      '-colorspace', 'Gray',
-      '-normalize',
-      '-contrast-stretch', '1.5%x99.0%',
-      '-threshold', '80%',
-      dstPath
-    ];
+    // Build ImageMagick args based on provided options so UI can control them
+    const args: string[] = ['-define', 'magick:thread-limit=1', srcPath];
+
+    // convert to grayscale
+    args.push('-colorspace', 'Gray');
+
+    if (opts.normalize !== false) {
+      args.push('-normalize');
+    }
+
+    if (opts.contrastStretch) {
+      const low = typeof opts.contrastLowPercent === 'number' ? opts.contrastLowPercent : 1.5;
+      const high = typeof opts.contrastHighPercent === 'number' ? opts.contrastHighPercent : 99.0;
+      args.push('-contrast-stretch', `${low}%x${high}%`);
+    }
+
+    if (typeof opts.thresholdPercent === 'number') {
+      args.push('-threshold', `${opts.thresholdPercent}%`);
+    } else if (opts.adaptiveThreshold) {
+      // simple fallback threshold when adaptive selected but no explicit percent
+      args.push('-threshold', '80%');
+    }
+
+    args.push(dstPath);
 
     console.log('[imagePreprocess] running magick with args:', args.join(' '));
     try {
@@ -71,4 +91,4 @@ export async function preprocessImage(srcPath: string, dstPath: string, opts: Pr
   }
 }
 
-export default { preprocessImage };
+export default { preprocessImage, hasMagick };
