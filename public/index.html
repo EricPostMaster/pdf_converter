@@ -4,62 +4,71 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PDF OCR Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/helpmepdf_icon.png" type="image/png">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <main>
-    <h1>PDF OCR — Preview & Submit</h1>
-
-    <section id="upload">
-      <label>PDF file
-        <input type="file" id="pdfFile" accept="application/pdf">
-      </label>
-
-      <div class="row">
-        <label>Pages to preview
-          <input type="number" id="pages" min="1" max="3" value="1">
-        </label>
-        <label>DPI
-          <input type="number" id="dpi" min="72" max="600" value="150">
-        </label>
+  <main class="app">
+    <header class="app-header">
+      <div class="brand">
+        <img src="/assets/helpmepdf_icon.png" alt="HelpMePDF icon" class="logo">
+        <div>
+          <h1>HelpMePDF</h1>
+          <p class="muted">Quickly preview preprocessing and run OCR to download text.</p>
+        </div>
       </div>
+    </header>
 
-      <div class="row sliders">
-        <label>Contrast low %
-          <input type="range" id="contrastLow" min="0" max="10" step="0.1" value="1.5">
-          <span id="contrastLowVal">1.5</span>
-        </label>
-        <label>Contrast high %
-          <input type="range" id="contrastHigh" min="50" max="100" step="0.1" value="99">
-          <span id="contrastHighVal">99</span>
-        </label>
-        <label>Threshold %
-          <input type="range" id="threshold" min="0" max="100" step="1" value="80">
-          <span id="thresholdVal">80</span>
-        </label>
-      </div>
+    <div class="layout">
+      <aside class="panel controls">
+        <div class="card">
+          <label class="fileLabel">PDF file
+            <input type="file" id="pdfFile" accept="application/pdf">
+          </label>
 
-      <div class="row">
-        <label><input type="checkbox" id="contrastStretch" checked> Enable contrast-stretch</label>
-        <label><input type="checkbox" id="normalize" checked> Normalize</label>
-      </div>
+          <div class="formRow">
+            <div class="field"><label>Pages to preview<input type="number" id="pages" min="1" max="3" value="1"></label></div>
+            <div class="field"><label>DPI<input type="number" id="dpi" min="72" max="600" value="150"></label></div>
+          </div>
 
-      <div class="actions">
-        <button id="previewBtn">Preview</button>
-        <button id="submitBtn">Submit</button>
-      </div>
-    </section>
+          <div class="sliders">
+            <div class="sliderRow"><label>Contrast low %<input type="range" id="contrastLow" min="0" max="10" step="0.1" value="1.5"><span id="contrastLowVal">1.5</span></label></div>
+            <div class="sliderRow"><label>Contrast high %<input type="range" id="contrastHigh" min="50" max="100" step="0.1" value="99"><span id="contrastHighVal">99</span></label></div>
+            <div class="sliderRow"><label>Threshold %<input type="range" id="threshold" min="0" max="100" step="1" value="80"><span id="thresholdVal">80</span></label></div>
+          </div>
 
-    <section id="previews">
-      <h2>Previews</h2>
-      <div id="previewList"></div>
-    </section>
+          <div class="toggles">
+            <label><input type="checkbox" id="contrastStretch" checked> Enable contrast-stretch</label>
+            <label><input type="checkbox" id="normalize" checked> Normalize</label>
+          </div>
 
-    <section id="result">
-      <h2>Job Status</h2>
-      <div id="jobStatus">No job</div>
-    </section>
+          <div class="actions">
+            <button id="previewBtn" class="btn primary">Preview</button>
+            <button id="submitBtn" class="btn">Submit</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel previews">
+        <div class="card">
+          <div class="panelHeader">
+            <h2>Previews</h2>
+            <div id="previewNotice" class="muted small"></div>
+          </div>
+          <div id="previewList" class="previewGrid"></div>
+        </div>
+
+        <div class="card statusCard">
+          <h3>Job Status</h3>
+          <div id="jobStatus">No job</div>
+        </div>
+      </section>
+    </div>
   </main>
+  <footer class="app-footer">
+    <div>Copyright 2026 | R2 Applications</div>
+  </footer>
 
   <script src="/app.js"></script>
 </body>
