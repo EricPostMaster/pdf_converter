@@ -1,0 +1,8 @@
+﻿node_modules/
+dist/
+output/
+uploads/
+work/
+*.log
+.env
+.vscode/
